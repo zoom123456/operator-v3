@@ -43,10 +43,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .top-date .dl{color:var(--bright);font-size:11px;}
 .top-date .tl{color:var(--accent);}
 
-/* NAV */
-.nav{display:flex;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:50px;z-index:199;overflow-x:auto;scrollbar-width:none;}
+/* NAV - iOS fix: never put overflow-x on a sticky element */
+.nav-sticky{position:sticky;top:50px;z-index:199;background:var(--bg);border-bottom:1px solid var(--border);}
+.nav{display:flex;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 .nav::-webkit-scrollbar{display:none;}
-.nav-btn{flex-shrink:0;flex:1;min-width:52px;padding:12px 4px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;user-select:none;-webkit-user-select:none;}
+.nav-btn{flex-shrink:0;flex:1;min-width:58px;padding:12px 4px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;user-select:none;-webkit-user-select:none;}
 .nav-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 
 /* VIEWS */
@@ -211,35 +212,75 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .wu-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim2);}
 
 /* ════ GTG TAB ════ */
-.gtg-hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-.gtg-card{background:var(--panel);border:1px solid var(--border);padding:20px 16px;text-align:center;transition:border-color 0.2s;}
+.gtg-counters-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.gtg-card{background:var(--panel);border:1px solid var(--border);overflow:hidden;transition:border-color 0.2s;}
 .gtg-card.done{border-color:rgba(76,175,80,0.4);}
-.gtg-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;}
-.gtg-count{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--bright);line-height:1;}
+.gtg-card-inner{padding:16px 14px 10px;}
+.gtg-card-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;}
+.gtg-count{font-family:'Bebas Neue',sans-serif;font-size:62px;color:var(--bright);line-height:1;}
 .gtg-count.done{color:var(--green);}
-.gtg-target{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);margin-top:4px;}
-.gtg-bar-wrap{height:3px;background:var(--border2);margin:10px 0 12px;overflow:hidden;}
+.gtg-bar-wrap{height:2px;background:var(--border2);margin:8px 0 10px;overflow:hidden;}
 .gtg-bar{height:100%;background:var(--accent);transition:width 0.4s ease;}
 .gtg-bar.done{background:var(--green);}
-.gtg-btns{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;}
-.gtg-btn{background:var(--accent-dim2);border:1px solid rgba(200,168,75,0.15);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:11px;padding:7px 10px;cursor:pointer;transition:background 0.15s;letter-spacing:1px;}
-.gtg-btn:active{background:var(--accent-dim);}
-.gtg-btn.rst{color:var(--dim);border-color:var(--border2);background:none;}
+.gtg-target-row{display:flex;align-items:baseline;gap:6px;}
+.gtg-target-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);}
+.gtg-target-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);line-height:1;}
+.gtg-setsize-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--dim);margin-top:4px;}
+.gtg-btns-grid{display:grid;grid-template-columns:1fr 2fr 1fr 1fr 1fr;gap:1px;background:var(--border);border-top:1px solid var(--border);}
+.gtg-btn-main,.gtg-btn-set,.gtg-btn-rst{text-align:center;padding:10px 4px;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;transition:background 0.15s;user-select:none;-webkit-user-select:none;}
+.gtg-btn-main{background:var(--panel2);color:var(--accent);}
+.gtg-btn-main:active{background:var(--accent-dim);}
+.gtg-btn-set{background:rgba(200,168,75,0.08);color:var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:14px;font-weight:600;}
+.gtg-btn-set:active{background:var(--accent-dim);}
+.gtg-set-label{font-size:7px;letter-spacing:2px;color:var(--dim);margin-top:2px;font-weight:400;}
+.gtg-btn-rst{background:var(--panel2);color:var(--dim);font-size:14px;}
+.gtg-btn-rst:active{color:var(--red);background:rgba(224,82,82,0.08);}
+.gtg-custom-row{display:flex;gap:0;border-top:1px solid var(--border);}
+.gtg-custom-inp{flex:1;background:var(--panel2);border:none;border-right:1px solid var(--border);color:var(--bright);font-family:'Share Tech Mono',monospace;font-size:13px;padding:9px 12px;outline:none;-webkit-appearance:none;min-width:0;}
+.gtg-custom-inp::placeholder{color:var(--dim2);font-size:11px;}
+.gtg-btn-add{background:var(--accent);color:#000;font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;padding:9px 14px;cursor:pointer;flex-shrink:0;}
+.gtg-btn-add:active{opacity:0.7;}
 
-.gtg-set-info{background:var(--panel);border:1px solid rgba(200,168,75,0.2);padding:14px 16px;margin-bottom:16px;}
-.gtg-set-title{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
-.gtg-set-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);}
-.gtg-set-row:last-child{border-bottom:none;}
-.gtg-set-lbl{font-size:13px;color:var(--text);}
-.gtg-set-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);}
+/* TEST DAY */
+.gtg-testday-box{border:1px solid rgba(139,26,26,0.4);background:rgba(139,26,26,0.06);margin-bottom:14px;overflow:hidden;}
+.gtg-testday-top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;}
+.gtg-testday-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:#c05050;text-transform:uppercase;margin-bottom:6px;}
+.gtg-testday-date{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--bright);letter-spacing:3px;line-height:1;}
+.gtg-testday-countdown{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);margin-top:4px;letter-spacing:0.5px;}
+.gtg-testday-days{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--accent);line-height:1;flex-shrink:0;padding-left:12px;}
+.gtg-date-inp{display:block;width:100%;background:rgba(0,0,0,0.3);border:none;border-top:1px solid rgba(139,26,26,0.3);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:11px;padding:10px 16px;outline:none;-webkit-appearance:none;}
 
-.streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:4px;}
-.streak-day{aspect-ratio:1;background:var(--panel);border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
-.streak-day.filled{background:rgba(200,168,75,0.12);border-color:rgba(200,168,75,0.3);}
-.streak-day.today{border-color:var(--accent);}
-.streak-dlbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:1px;}
-.streak-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);}
-.streak-day.filled .streak-dot{background:var(--accent);}
+/* CALCULATOR */
+.gtg-calc-wrap{background:var(--panel);border:1px solid var(--border);margin-bottom:14px;overflow:hidden;}
+.gtg-calc-header{display:flex;align-items:center;gap:10px;padding:14px 16px 0;}
+.gtg-calc-inputs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:12px;border-top:1px solid var(--border);}
+.gtg-calc-field{background:var(--panel2);padding:12px 14px;}
+.gtg-calc-field label{display:block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;}
+.gtg-calc-inp-wrap{display:flex;align-items:baseline;gap:8px;}
+.gtg-calc-inp{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--bright);font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;padding:4px 0;width:100%;outline:none;-webkit-appearance:none;}
+.gtg-calc-inp:focus{border-bottom-color:var(--accent);}
+.gtg-calc-inp::placeholder{color:var(--dim2);}
+.gtg-calc-unit{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;flex-shrink:0;}
+.gtg-calc-results{border-top:1px solid var(--border);}
+.gtg-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.gtg-result-cell{background:var(--panel);padding:12px 14px;}
+.gtg-result-wide{grid-column:span 2;}
+.gtg-result-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);line-height:1;}
+.gtg-result-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px;text-transform:uppercase;}
+.gtg-save-btn{display:block;width:100%;background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;padding:12px;cursor:pointer;text-transform:uppercase;transition:opacity 0.15s;}
+.gtg-save-btn:active{opacity:0.7;}
+
+/* MONTH 6 GRID */
+.gtg-targets-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:20px;}
+.gtg-target-cell{background:var(--panel);padding:14px;}
+.gtg-target-big{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--accent);line-height:1;}
+.gtg-target-small{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px;text-transform:uppercase;}
+
+/* TOGGLE SWITCH */
+.toggle-switch{width:44px;height:24px;background:var(--border2);border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--accent);}
+.toggle-knob{width:18px;height:18px;background:var(--dim);border-radius:50%;position:absolute;top:3px;left:3px;transition:all 0.2s;}
+.toggle-switch.on .toggle-knob{left:23px;background:#000;}
 
 /* ════ PLAN ════ */
 .sfas-box{border:1px solid rgba(139,26,26,0.5);background:rgba(139,26,26,0.06);padding:18px 20px;display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;}
@@ -356,6 +397,90 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .check-item:nth-child(6){animation-delay:0.18s}
 .check-item:nth-child(7){animation-delay:0.21s}
 .check-item:nth-child(8){animation-delay:0.24s}
+
+/* ════ TIMER TAB ════ */
+.timer-main-card{background:var(--panel);border:1px solid var(--border);padding:24px 20px;margin-bottom:14px;text-align:center;}
+.timer-status-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);border:1px solid var(--border2);padding:3px 12px;margin-bottom:16px;text-transform:uppercase;}
+.timer-status-badge.running{color:var(--green);border-color:rgba(76,175,80,0.35);background:rgba(76,175,80,0.06);}
+.timer-status-badge.paused{color:var(--orange);border-color:rgba(248,131,74,0.35);}
+.timer-display{font-family:'Bebas Neue',sans-serif;font-size:72px;color:var(--bright);letter-spacing:4px;line-height:1;margin-bottom:4px;}
+.timer-display.running{color:var(--accent);}
+.timer-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:2px;margin-bottom:20px;}
+.timer-main-btns{display:flex;gap:8px;justify-content:center;}
+.timer-btn-start{background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;padding:12px 28px;cursor:pointer;transition:opacity 0.15s;text-transform:uppercase;}
+.timer-btn-start:active{opacity:0.7;}
+.timer-btn-start.pause{background:var(--orange);}
+.timer-btn-reset{background:var(--panel2);border:1px solid var(--border2);color:var(--dim);font-size:18px;padding:12px 16px;cursor:pointer;transition:all 0.15s;}
+.timer-btn-reset:active{color:var(--red);}
+
+.rest-presets{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.rest-presets::-webkit-scrollbar{display:none;}
+.rest-preset{flex-shrink:0;padding:8px 14px;border:1px solid var(--border);background:var(--panel);color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.rest-preset.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600;}
+.rest-preset:active{opacity:0.7;}
+
+.rest-timer-card{background:var(--panel);border:1px solid var(--border);padding:24px 20px 16px;margin-bottom:14px;}
+.rest-ring-wrap{position:relative;width:200px;height:200px;margin:0 auto 20px;}
+.rest-ring-svg{width:200px;height:200px;transform:rotate(-90deg);}
+.rest-ring-bg{fill:none;stroke:var(--border2);stroke-width:8;}
+.rest-ring-fill{fill:none;stroke:var(--accent);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 0.5s linear,stroke 0.3s;}
+.rest-ring-fill.done{stroke:var(--green);}
+.rest-ring-fill.urgent{stroke:var(--red);}
+.rest-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.rest-timer-display{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--bright);letter-spacing:3px;line-height:1;}
+.rest-timer-display.done{color:var(--green);}
+.rest-timer-display.urgent{color:var(--red);}
+.rest-timer-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--dim);margin-top:4px;}
+.rest-controls{display:flex;gap:8px;margin-bottom:14px;}
+.rest-btn-start{flex:1;background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;padding:12px;cursor:pointer;transition:opacity 0.15s;text-transform:uppercase;}
+.rest-btn-start:active{opacity:0.7;}
+.rest-btn-start.counting{background:var(--red);}
+.rest-btn-skip{background:var(--panel2);border:1px solid var(--border2);color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:12px 16px;cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.rest-btn-skip:active{color:var(--accent);}
+.rest-custom-row{display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid var(--border);}
+.rest-custom-inputs{display:flex;align-items:center;gap:4px;flex:1;}
+.rest-custom-inp{background:var(--panel2);border:1px solid var(--border2);color:var(--bright);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;padding:6px 10px;width:60px;outline:none;-webkit-appearance:none;border-radius:0;text-align:center;}
+.rest-custom-inp:focus{border-color:var(--accent);}
+.rest-custom-inp::placeholder{color:var(--dim2);}
+.rest-colon{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--dim);}
+.rest-custom-btn{background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;padding:10px 14px;cursor:pointer;text-transform:uppercase;flex-shrink:0;}
+.rest-custom-btn:active{opacity:0.7;}
+
+.set-log-wrap{background:var(--panel);border:1px solid var(--border);padding:14px;}
+.set-log-header{display:grid;grid-template-columns:1fr 60px 70px;gap:8px;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.set-log-row{display:grid;grid-template-columns:1fr 60px 70px;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);align-items:center;}
+.set-log-row:last-child{border-bottom:none;}
+.set-log-ex{font-size:12px;color:var(--text);}
+.set-log-set{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);text-align:center;}
+.set-log-rest{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);text-align:right;}
+
+/* SPLIT TEMPLATES */
+.split-template-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.split-card{background:var(--panel);border:1px solid var(--border);padding:14px 12px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.split-card:active{opacity:0.7;}
+.split-card.active-split{border-color:var(--accent);background:rgba(200,168,75,0.06);}
+.split-card.active-split::after{content:'✓';position:absolute;top:8px;right:10px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--accent);}
+.split-card-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--bright);line-height:1;margin-bottom:4px;}
+.split-card.active-split .split-card-name{color:var(--accent);}
+.split-card-days{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;line-height:1.6;}
+.split-card-tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--dim);border:1px solid var(--border2);padding:2px 6px;margin-bottom:6px;}
+.custom-day-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+.custom-day-row:last-child{border-bottom:none;}
+.custom-day-inp{background:var(--panel2);border:1px solid var(--border2);color:var(--bright);font-family:'Share Tech Mono',monospace;font-size:12px;padding:7px 10px;outline:none;flex:1;min-width:0;}
+.custom-day-inp:focus{border-color:var(--accent);}
+.apply-split-btn{background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;padding:12px;cursor:pointer;width:100%;text-transform:uppercase;margin-top:4px;transition:opacity 0.15s;}
+.apply-split-btn:active{opacity:0.7;}
+.split-confirm{background:rgba(139,26,26,0.12);border:1px solid rgba(139,26,26,0.4);padding:12px 14px;margin-bottom:12px;display:none;}
+.split-confirm-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:#c05050;letter-spacing:1px;line-height:1.6;margin-bottom:10px;}
+.split-confirm-btns{display:flex;gap:8px;}
+.split-confirm-yes{flex:1;background:#8b1a1a;border:none;color:#fff;font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;padding:10px;cursor:pointer;text-transform:uppercase;}
+.split-confirm-no{flex:1;background:none;border:1px solid var(--border2);color:var(--dim);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:10px;cursor:pointer;text-transform:uppercase;}
+
+/* TOGGLE SWITCH */
+.toggle-switch{width:44px;height:24px;background:var(--border2);border-radius:12px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--accent);}
+.toggle-knob{width:18px;height:18px;background:var(--dim);border-radius:50%;position:absolute;top:3px;left:3px;transition:all 0.2s;}
+.toggle-switch.on .toggle-knob{left:23px;background:#000;}
 </style>
 </head>
 <body>
@@ -367,14 +492,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
 </div>
 
+<div class="nav-sticky">
 <div class="nav" id="mainNav">
   <div class="nav-btn active" id="navToday" onclick="switchView('today')">TODAY</div>
-  <div class="nav-btn" id="navLog"     onclick="switchView('log')">LOG</div>
-  <div class="nav-btn" id="navGtg"     onclick="switchView('gtg')">GTG</div>
-  <div class="nav-btn" id="navRun"     onclick="switchView('run')">RUN</div>
-  <div class="nav-btn" id="navPlan"    onclick="switchView('plan')">PLAN</div>
-  <div class="nav-btn" id="navStats"   onclick="switchView('stats')">STATS</div>
+  <div class="nav-btn" id="navLog"      onclick="switchView('log')">LOG</div>
+  <div class="nav-btn" id="navGtg"      onclick="switchView('gtg')">GTG</div>
+  <div class="nav-btn" id="navRun"      onclick="switchView('run')">RUN</div>
+  <div class="nav-btn" id="navPlan"     onclick="switchView('plan')">PLAN</div>
+  <div class="nav-btn" id="navStats"    onclick="switchView('stats')">STATS</div>
+  <div class="nav-btn" id="navTimer"   onclick="switchView('timer')">TIMER</div>
   <div class="nav-btn" id="navSettings" onclick="switchView('settings')">SETTINGS</div>
+</div>
 </div>
 
 <!-- TODAY -->
@@ -393,55 +521,134 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 <!-- GTG -->
 <div class="view" id="viewGtg">
   <div class="content">
-    <div class="sec-hd" style="margin-top:0"><div class="sec-tag">GTG</div><div class="sec-title">GREASE THE GROOVE</div></div>
 
-    <div class="gtg-set-info">
-      <div class="gtg-set-title">// YOUR SET SIZES (based on your maxes)</div>
-      <div class="gtg-set-row"><div class="gtg-set-lbl">Push-up max: 20 reps</div><div class="gtg-set-val">DO SETS OF 8</div></div>
-      <div class="gtg-set-row"><div class="gtg-set-lbl">Sit-up max: 30 reps</div><div class="gtg-set-val">DO SETS OF 10</div></div>
-      <div class="gtg-set-row"><div class="gtg-set-lbl">Rest between sets</div><div class="gtg-set-val">30–60 MIN</div></div>
-      <div class="gtg-set-row"><div class="gtg-set-lbl">Rule</div><div class="gtg-set-val">NEVER TO FAILURE</div></div>
-    </div>
-
-    <div class="gtg-hero">
+    <!-- COUNTERS FIRST — main action -->
+    <div class="gtg-counters-row">
       <div class="gtg-card" id="gtgPushCard">
-        <div class="gtg-label">PUSH-UPS</div>
-        <div class="gtg-count" id="gtgPushN">0</div>
-        <div class="gtg-bar-wrap"><div class="gtg-bar" id="gtgPushBar" style="width:0%"></div></div>
-        <div class="gtg-target">TARGET: <span id="gtgPushTgt">80</span></div>
-        <div class="gtg-btns" style="margin-top:12px">
-          <div class="gtg-btn" onclick="addGTG('push',8)">+8</div>
-          <div class="gtg-btn" onclick="addGTG('push',10)">+10</div>
-          <div class="gtg-btn" onclick="addGTG('push',15)">+15</div>
-          <div class="gtg-btn rst" onclick="resetGTG('push')">↺</div>
+        <div class="gtg-card-inner">
+          <div class="gtg-card-label">PUSH-UPS</div>
+          <div class="gtg-count" id="gtgPushN">0</div>
+          <div class="gtg-bar-wrap"><div class="gtg-bar" id="gtgPushBar" style="width:0%"></div></div>
+          <div class="gtg-target-row">
+            <span class="gtg-target-lbl">TARGET</span>
+            <span class="gtg-target-num" id="gtgPushTgt">80</span>
+          </div>
+          <div class="gtg-setsize-badge" id="gtgPushSizeBadge">SET SIZE: 8</div>
+        </div>
+        <div class="gtg-btns-grid" id="gtgPushBtns">
+          <div class="gtg-btn-main" onclick="addGTG('push',1)">+1</div>
+          <div class="gtg-btn-set" id="gtgPushSetBtn" onclick="addGTGSet('push')">+8<span class="gtg-set-label">SET</span></div>
+          <div class="gtg-btn-main" onclick="addGTG('push',10)">+10</div>
+          <div class="gtg-btn-main" onclick="addGTG('push',15)">+15</div>
+          <div class="gtg-btn-rst" onclick="resetGTG('push')">↺</div>
+        </div>
+        <div class="gtg-custom-row" id="gtgPushCustom" style="display:none">
+          <input class="gtg-custom-inp" type="number" inputmode="numeric" placeholder="custom reps" id="gtgPushCustomInp">
+          <div class="gtg-btn-add" onclick="addGTGCustom('push')">ADD</div>
         </div>
       </div>
+
       <div class="gtg-card" id="gtgSitCard">
-        <div class="gtg-label">SIT-UPS</div>
-        <div class="gtg-count" id="gtgSitN">0</div>
-        <div class="gtg-bar-wrap"><div class="gtg-bar" id="gtgSitBar" style="width:0%"></div></div>
-        <div class="gtg-target">TARGET: <span id="gtgSitTgt">80</span></div>
-        <div class="gtg-btns" style="margin-top:12px">
-          <div class="gtg-btn" onclick="addGTG('sit',10)">+10</div>
-          <div class="gtg-btn" onclick="addGTG('sit',15)">+15</div>
-          <div class="gtg-btn" onclick="addGTG('sit',20)">+20</div>
-          <div class="gtg-btn rst" onclick="resetGTG('sit')">↺</div>
+        <div class="gtg-card-inner">
+          <div class="gtg-card-label">SIT-UPS</div>
+          <div class="gtg-count" id="gtgSitN">0</div>
+          <div class="gtg-bar-wrap"><div class="gtg-bar" id="gtgSitBar" style="width:0%"></div></div>
+          <div class="gtg-target-row">
+            <span class="gtg-target-lbl">TARGET</span>
+            <span class="gtg-target-num" id="gtgSitTgt">80</span>
+          </div>
+          <div class="gtg-setsize-badge" id="gtgSitSizeBadge">SET SIZE: 10</div>
+        </div>
+        <div class="gtg-btns-grid" id="gtgSitBtns">
+          <div class="gtg-btn-main" onclick="addGTG('sit',1)">+1</div>
+          <div class="gtg-btn-set" id="gtgSitSetBtn" onclick="addGTGSet('sit')">+10<span class="gtg-set-label">SET</span></div>
+          <div class="gtg-btn-main" onclick="addGTG('sit',10)">+10</div>
+          <div class="gtg-btn-main" onclick="addGTG('sit',15)">+15</div>
+          <div class="gtg-btn-rst" onclick="resetGTG('sit')">↺</div>
+        </div>
+        <div class="gtg-custom-row" id="gtgSitCustom" style="display:none">
+          <input class="gtg-custom-inp" type="number" inputmode="numeric" placeholder="custom reps" id="gtgSitCustomInp">
+          <div class="gtg-btn-add" onclick="addGTGCustom('sit')">ADD</div>
         </div>
       </div>
     </div>
 
+    <!-- TEST DAY -->
+    <div class="gtg-testday-box" id="gtgTestDayBox">
+      <div class="gtg-testday-top">
+        <div>
+          <div class="gtg-testday-label">// NEXT TEST DAY</div>
+          <div class="gtg-testday-date" id="gtgTestDate">SET YOUR START DATE</div>
+          <div class="gtg-testday-countdown" id="gtgTestCountdown">Pick your start date — test every 4 weeks on a Saturday</div>
+        </div>
+        <div class="gtg-testday-days" id="gtgTestDaysLeft"></div>
+      </div>
+      <input type="date" id="gtgStartDate" class="gtg-date-inp" onchange="saveTestStart()">
+    </div>
+
+    <!-- CALCULATOR -->
+    <div class="gtg-calc-wrap">
+      <div class="gtg-calc-header">
+        <div class="sec-tag" style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--accent);background:rgba(200,168,75,0.08);border:1px solid rgba(200,168,75,0.2);padding:3px 9px;">CALC</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--bright);">SET SIZE CALCULATOR</div>
+      </div>
+      <div class="gtg-calc-inputs">
+        <div class="gtg-calc-field">
+          <label>YOUR PUSH MAX</label>
+          <div class="gtg-calc-inp-wrap">
+            <input class="gtg-calc-inp" type="number" inputmode="numeric" id="calcPushMax" placeholder="20" oninput="calcGTG()">
+            <span class="gtg-calc-unit">REPS</span>
+          </div>
+        </div>
+        <div class="gtg-calc-field">
+          <label>YOUR SIT MAX</label>
+          <div class="gtg-calc-inp-wrap">
+            <input class="gtg-calc-inp" type="number" inputmode="numeric" id="calcSitMax" placeholder="30" oninput="calcGTG()">
+            <span class="gtg-calc-unit">REPS</span>
+          </div>
+        </div>
+      </div>
+      <div class="gtg-calc-results" id="gtgCalcResults" style="display:none">
+        <div class="gtg-result-grid">
+          <div class="gtg-result-cell">
+            <div class="gtg-result-val" id="calcPushSet">—</div>
+            <div class="gtg-result-lbl">PUSH SET SIZE</div>
+          </div>
+          <div class="gtg-result-cell">
+            <div class="gtg-result-val" id="calcSitSet">—</div>
+            <div class="gtg-result-lbl">SIT SET SIZE</div>
+          </div>
+          <div class="gtg-result-cell">
+            <div class="gtg-result-val" id="calcPushSets">—</div>
+            <div class="gtg-result-lbl">SETS TO HIT PUSH</div>
+          </div>
+          <div class="gtg-result-cell">
+            <div class="gtg-result-val" id="calcSitSets">—</div>
+            <div class="gtg-result-lbl">SETS TO HIT SIT</div>
+          </div>
+          <div class="gtg-result-cell gtg-result-wide">
+            <div class="gtg-result-val" style="color:var(--green)">30–60 MIN</div>
+            <div class="gtg-result-lbl">REST BETWEEN SETS</div>
+          </div>
+        </div>
+      </div>
+      <button class="gtg-save-btn" onclick="saveGTGMaxes()">SAVE &amp; APPLY MAXES</button>
+      <div class="pf" id="gtgMaxFlash">✓ MAXES SAVED — SET SIZES UPDATED</div>
+    </div>
+
+    <!-- STREAK -->
     <div class="sec-hd"><div class="sec-tag">—</div><div class="sec-title">LAST 7 DAYS</div></div>
     <div class="streak-grid" id="gtgStreak"></div>
 
+    <!-- MONTH 6 -->
     <div class="sec-hd"><div class="sec-tag">—</div><div class="sec-title">MONTH 6 TARGETS</div></div>
-    <div class="settings-section" style="cursor:default">
-      <div style="padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);line-height:1">60–80</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px">PUSH-UPS IN ONE GO</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);line-height:1">80–100</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px">SIT-UPS IN ONE GO</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);line-height:1">15–20</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px">PULL-UPS IN ONE GO</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);line-height:1">500</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px">PUSH+SIT DAILY VOL</div></div>
-      </div>
+    <div class="gtg-targets-grid">
+      <div class="gtg-target-cell"><div class="gtg-target-big">60–80</div><div class="gtg-target-small">PUSH-UPS IN ONE GO</div></div>
+      <div class="gtg-target-cell"><div class="gtg-target-big">80–100</div><div class="gtg-target-small">SIT-UPS IN ONE GO</div></div>
+      <div class="gtg-target-cell"><div class="gtg-target-big">15–20</div><div class="gtg-target-small">PULL-UPS IN ONE GO</div></div>
+      <div class="gtg-target-cell"><div class="gtg-target-big">500</div><div class="gtg-target-small">DAILY VOLUME</div></div>
     </div>
+
   </div>
 </div>
 
@@ -522,6 +729,57 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="pf" id="profFlash">✓ SAVED</div>
     </div>
 
+    <!-- CALORIE CALCULATOR -->
+    <div class="sec-hd"><div class="sec-tag">—</div><div class="sec-title">CALORIE CALCULATOR</div></div>
+    <div class="profile-card">
+      <div class="profile-title">// MIFFLIN-ST JEOR FORMULA (MOST ACCURATE)</div>
+      <div class="profile-grid">
+        <div class="profile-field" style="grid-column:span 2">
+          <label>ACTIVITY LEVEL</label>
+          <select class="profile-inp" id="calActivity" style="font-size:14px;padding:8px 10px;cursor:pointer">
+            <option value="1.2">Sedentary (desk job, no exercise)</option>
+            <option value="1.375">Lightly active (1–3 days/week)</option>
+            <option value="1.55" selected>Moderately active (3–5 days/week)</option>
+            <option value="1.725">Very active (6–7 days/week)</option>
+            <option value="1.9">Extremely active (physical job + training)</option>
+          </select>
+        </div>
+      </div>
+      <button class="profile-save-btn" onclick="calcCalories()">CALCULATE</button>
+      <div id="calResult" style="display:none;margin-top:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px">
+          <div style="background:var(--panel2);border:1px solid var(--border2);padding:12px 10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--blue);line-height:1" id="calCut">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px;letter-spacing:1px">CUT<br>−300</div>
+          </div>
+          <div style="background:var(--panel2);border:1px solid rgba(200,168,75,0.3);padding:12px 10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);line-height:1" id="calMaint">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px;letter-spacing:1px">MAINTAIN</div>
+          </div>
+          <div style="background:var(--panel2);border:1px solid rgba(76,175,80,0.3);padding:12px 10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);line-height:1" id="calBulk">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px;letter-spacing:1px">BULK<br>+300</div>
+          </div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px;margin-bottom:8px">// MACROS FOR MAINTENANCE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px" id="macroGrid">
+          <div style="background:var(--panel2);border:1px solid var(--border2);padding:10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--accent);line-height:1" id="macroProtein">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px">PROTEIN g</div>
+          </div>
+          <div style="background:var(--panel2);border:1px solid var(--border2);padding:10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--orange);line-height:1" id="macroCarbs">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px">CARBS g</div>
+          </div>
+          <div style="background:var(--panel2);border:1px solid var(--border2);padding:10px;text-align:center">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--purple);line-height:1" id="macroFat">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:3px">FAT g</div>
+          </div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);margin-top:10px;line-height:1.7">Protein: 2g/kg bodyweight · Fat: 25% of calories · Carbs: remainder<br>These are targets — adjust based on how you feel and perform.</div>
+      </div>
+    </div>
+
     <div class="sec-hd"><div class="sec-tag">—</div><div class="sec-title">OVERVIEW</div></div>
     <div class="stats-grid">
       <div class="stat-card"><div class="sv" id="stSessions">0</div><div class="sl">Sessions Logged</div></div>
@@ -542,12 +800,98 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
   </div>
 </div>
 
+<!-- TIMER -->
+<div class="view" id="viewTimer">
+  <div class="content">
+
+    <!-- WORKOUT TIMER -->
+    <div class="sec-hd" style="margin-top:0"><div class="sec-tag">01</div><div class="sec-title">WORKOUT TIMER</div></div>
+    <div class="timer-main-card" id="workoutTimerCard">
+      <div class="timer-status-badge" id="wkStatusBadge">READY</div>
+      <div class="timer-display" id="wkTimerDisplay">00:00:00</div>
+      <div class="timer-sub" id="wkTimerSub">Total session time</div>
+      <div class="timer-main-btns">
+        <button class="timer-btn-start" id="wkStartBtn" onclick="wkToggle()">START SESSION</button>
+        <button class="timer-btn-reset" onclick="wkReset()">↺</button>
+      </div>
+    </div>
+
+    <!-- REST TIMER -->
+    <div class="sec-hd"><div class="sec-tag">02</div><div class="sec-title">REST TIMER</div></div>
+
+    <!-- Preset durations -->
+    <div class="rest-presets">
+      <div class="rest-preset" onclick="setRest(60)" id="rp60">60s</div>
+      <div class="rest-preset" onclick="setRest(90)" id="rp90">90s</div>
+      <div class="rest-preset active" onclick="setRest(120)" id="rp120">2 MIN</div>
+      <div class="rest-preset" onclick="setRest(180)" id="rp180">3 MIN</div>
+      <div class="rest-preset" onclick="setRest(240)" id="rp240">4 MIN</div>
+    </div>
+
+    <div class="rest-timer-card" id="restTimerCard">
+      <!-- Ring -->
+      <div class="rest-ring-wrap">
+        <svg class="rest-ring-svg" viewBox="0 0 200 200">
+          <circle class="rest-ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="rest-ring-fill" id="restRingFill" cx="100" cy="100" r="88"
+            stroke-dasharray="553" stroke-dashoffset="0"/>
+        </svg>
+        <div class="rest-ring-inner">
+          <div class="rest-timer-display" id="restTimerDisplay">2:00</div>
+          <div class="rest-timer-label" id="restTimerLabel">REST</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="rest-controls">
+        <button class="rest-btn-start" id="restStartBtn" onclick="restToggle()">START REST</button>
+        <button class="rest-btn-skip" onclick="restSkip()">SKIP</button>
+      </div>
+
+      <!-- Custom time -->
+      <div class="rest-custom-row">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px">CUSTOM</div>
+        <div class="rest-custom-inputs">
+          <input class="rest-custom-inp" type="number" inputmode="numeric" id="customMins" placeholder="0" min="0" max="59">
+          <span class="rest-colon">:</span>
+          <input class="rest-custom-inp" type="number" inputmode="numeric" id="customSecs" placeholder="00" min="0" max="59">
+        </div>
+        <button class="rest-custom-btn" onclick="setCustomRest()">SET</button>
+      </div>
+    </div>
+
+    <!-- SET LOG -->
+    <div class="sec-hd"><div class="sec-tag">03</div><div class="sec-title">SET LOG</div></div>
+    <div class="set-log-wrap">
+      <div class="set-log-header">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px">EXERCISE</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px">SET</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:2px">REST</div>
+      </div>
+      <div id="setLogList">
+        <div class="no-data">Start a rest timer after each set — it logs here automatically</div>
+      </div>
+      <button class="clear-btn" style="margin-top:12px;font-size:9px;padding:7px 12px" onclick="clearSetLog()">CLEAR LOG</button>
+    </div>
+
+  </div>
+</div>
+
 <!-- SETTINGS -->
 <div class="view" id="viewSettings">
   <div class="content">
 
+    <!-- SPLIT TEMPLATES -->
+    <div class="sec-hd" style="margin-top:0"><div class="sec-tag">01</div><div class="sec-title">CHANGE YOUR SPLIT</div></div>
+    <div class="split-template-grid" id="splitTemplateGrid"></div>
+    <div id="customSplitBuilder" style="display:none">
+      <div class="sec-hd"><div class="sec-tag">—</div><div class="sec-title">BUILD CUSTOM SPLIT</div></div>
+      <div id="customDaysList"></div>
+      <button class="profile-save-btn" onclick="addCustomDay()" style="margin-bottom:8px">+ ADD DAY</button>
+    </div>
+
     <!-- EXERCISE EDITOR -->
-    <div class="sec-hd" style="margin-top:0"><div class="sec-tag">01</div><div class="sec-title">EDIT YOUR SPLIT</div></div>
+    <div class="sec-hd"><div class="sec-tag">02</div><div class="sec-title">EDIT EXERCISES</div></div>
     <div id="exEditorSections"></div>
 
     <!-- UI COLOURS -->
@@ -620,6 +964,90 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 // ════════════════════════════════════════
 // DATA
 // ════════════════════════════════════════
+// ════════════════════════════════════════
+// SPLIT TEMPLATES
+// ════════════════════════════════════════
+const SPLIT_TEMPLATES = {
+  ppl: {
+    name: 'PPL / UL',
+    label: 'Push Pull Legs',
+    days: '5 days/week',
+    desc: 'Mon Push · Tue Pull · Wed Legs · Thu Upper · Fri Lower',
+    schedule: [
+      { id:'mon', label:'MON', name:'PUSH',  hasRun:true,  runType:'easy',      exercises:['Barbell Bench Press','Incline Smith Machine Press','Pec Deck','Overhead Barbell Press','Lateral Raises','Tricep Pushdowns','Preacher Curls'] },
+      { id:'tue', label:'TUE', name:'PULL',  hasRun:false, exercises:['Barbell Rows','Lat Pulldowns / Pull-ups','Seated Cable Rows','Face Pulls','EZ Bar Curls','Incline Dumbbell Curls'] },
+      { id:'wed', label:'WED', name:'LEGS',  hasRun:true,  runType:'intervals', exercises:['Barbell Squats','Romanian Deadlifts','Leg Press','Leg Extensions','Calf Raises'] },
+      { id:'thu', label:'THU', name:'UPPER', hasRun:false, exercises:['Pull-ups','Incline Bench Press','Chest-Supported Row','Seated Shoulder Press','EZ Bar Curls','Hammer Curls','Cable Fly'] },
+      { id:'fri', label:'FRI', name:'LOWER', hasRun:true,  runType:'long',      exercises:['Hack Squats','Stiff-Legged Deadlift','Split Squats','Calf Raises','Dragon Flag','Cable Crunches'] },
+      { id:'sat', label:'SAT', name:'CALS',  hasRun:false, bw:true, exercises:['Push-ups','Sit-ups','Pull-ups','Squats'] }
+    ]
+  },
+  upperlower: {
+    name: 'UPPER / LOWER',
+    label: 'Upper Lower Split',
+    days: '4 days/week',
+    desc: 'Mon Upper A · Tue Lower A · Thu Upper B · Fri Lower B',
+    schedule: [
+      { id:'mon', label:'MON', name:'UPPER A', hasRun:false, exercises:['Barbell Bench Press','Barbell Rows','Overhead Press','Pull-ups','Lateral Raises','Tricep Pushdowns','Bicep Curls'] },
+      { id:'tue', label:'TUE', name:'LOWER A', hasRun:true,  runType:'easy',      exercises:['Barbell Squats','Romanian Deadlifts','Leg Press','Leg Curls','Calf Raises'] },
+      { id:'wed', label:'WED', name:'REST',    hasRun:false, rest:true, exercises:[] },
+      { id:'thu', label:'THU', name:'UPPER B', hasRun:false, exercises:['Incline Bench Press','Chest-Supported Row','Dumbbell Shoulder Press','Cable Rows','Cable Fly','Hammer Curls','Skull Crushers'] },
+      { id:'fri', label:'FRI', name:'LOWER B', hasRun:true,  runType:'long',      exercises:['Hack Squats','Stiff-Legged Deadlift','Split Squats','Leg Extensions','Calf Raises'] },
+      { id:'sat', label:'SAT', name:'CALS',    hasRun:false, bw:true, exercises:['Push-ups','Sit-ups','Pull-ups','Squats'] }
+    ]
+  },
+  bro: {
+    name: 'BRO SPLIT',
+    label: 'Classic Bro Split',
+    days: '5 days/week',
+    desc: 'Mon Chest · Tue Back · Wed Shoulders · Thu Arms · Fri Legs',
+    schedule: [
+      { id:'mon', label:'MON', name:'CHEST',     hasRun:false, exercises:['Barbell Bench Press','Incline Dumbbell Press','Cable Fly','Pec Deck','Dips'] },
+      { id:'tue', label:'TUE', name:'BACK',      hasRun:false, exercises:['Deadlift','Barbell Rows','Lat Pulldowns','Seated Cable Rows','Face Pulls','Shrugs'] },
+      { id:'wed', label:'WED', name:'SHOULDERS', hasRun:true,  runType:'easy',      exercises:['Overhead Barbell Press','Dumbbell Shoulder Press','Lateral Raises','Front Raises','Rear Delt Fly','Upright Rows'] },
+      { id:'thu', label:'THU', name:'ARMS',      hasRun:false, exercises:['Barbell Curls','Hammer Curls','Preacher Curls','Tricep Pushdowns','Skull Crushers','Overhead Tricep Extension'] },
+      { id:'fri', label:'FRI', name:'LEGS',      hasRun:true,  runType:'long',      exercises:['Barbell Squats','Romanian Deadlifts','Leg Press','Leg Extensions','Leg Curls','Calf Raises'] },
+      { id:'sat', label:'SAT', name:'CALS',      hasRun:false, bw:true, exercises:['Push-ups','Sit-ups','Pull-ups','Squats'] }
+    ]
+  },
+  pushpull: {
+    name: 'PUSH / PULL',
+    label: 'Push Pull Split',
+    days: '4 days/week',
+    desc: 'Mon Push · Tue Pull · Thu Push · Fri Pull',
+    schedule: [
+      { id:'mon', label:'MON', name:'PUSH A', hasRun:false, exercises:['Barbell Bench Press','Overhead Press','Incline Dumbbell Press','Lateral Raises','Tricep Pushdowns','Skull Crushers'] },
+      { id:'tue', label:'TUE', name:'PULL A', hasRun:false, exercises:['Deadlift','Pull-ups','Barbell Rows','Face Pulls','Barbell Curls','Hammer Curls'] },
+      { id:'wed', label:'WED', name:'REST',   hasRun:false, rest:true, exercises:[] },
+      { id:'thu', label:'THU', name:'PUSH B', hasRun:true,  runType:'easy', exercises:['Incline Bench Press','Dumbbell Shoulder Press','Pec Deck','Cable Lateral Raises','Cable Pushdowns','Dips'] },
+      { id:'fri', label:'FRI', name:'PULL B', hasRun:true,  runType:'long', exercises:['Romanian Deadlift','Lat Pulldowns','Seated Cable Rows','Chest-Supported Row','Preacher Curls','Incline Dumbbell Curls'] },
+      { id:'sat', label:'SAT', name:'CALS',   hasRun:false, bw:true, exercises:['Push-ups','Sit-ups','Pull-ups','Squats'] }
+    ]
+  },
+  fullbody: {
+    name: 'FULL BODY',
+    label: 'Full Body 3x',
+    days: '3 days/week',
+    desc: 'Mon Full A · Wed Full B · Fri Full C',
+    schedule: [
+      { id:'mon', label:'MON', name:'FULL A', hasRun:true,  runType:'easy',      exercises:['Barbell Squats','Barbell Bench Press','Barbell Rows','Overhead Press','Romanian Deadlifts','Pull-ups'] },
+      { id:'tue', label:'TUE', name:'REST',   hasRun:false, rest:true, exercises:[] },
+      { id:'wed', label:'WED', name:'FULL B', hasRun:true,  runType:'intervals', exercises:['Deadlift','Incline Bench Press','Lat Pulldowns','Dumbbell Shoulder Press','Leg Press','Cable Rows'] },
+      { id:'thu', label:'THU', name:'REST',   hasRun:false, rest:true, exercises:[] },
+      { id:'fri', label:'FRI', name:'FULL C', hasRun:true,  runType:'long',      exercises:['Hack Squats','Dumbbell Bench Press','Chest-Supported Row','Lateral Raises','Leg Curls','Bicep Curls','Tricep Pushdowns'] },
+      { id:'sat', label:'SAT', name:'CALS',   hasRun:false, bw:true, exercises:['Push-ups','Sit-ups','Pull-ups','Squats'] }
+    ]
+  },
+  custom: {
+    name: 'CUSTOM',
+    label: 'Build Your Own',
+    days: 'You decide',
+    desc: 'Name your days and add your own exercises',
+    schedule: null
+  }
+};
+
+
 const DEFAULT_DAYS = [
   { id:'mon', label:'MON', name:'PUSH',  hasRun:true,  runType:'easy',      exercises:['Barbell Bench Press','Incline Smith Machine Press','Pec Deck','Overhead Barbell Press','Lateral Raises','Tricep Pushdowns','Preacher Curls'] },
   { id:'tue', label:'TUE', name:'PULL',  hasRun:false, exercises:['Barbell Rows','Lat Pulldowns / Pull-ups','Seated Cable Rows','Face Pulls','EZ Bar Curls','Incline Dumbbell Curls'] },
@@ -724,12 +1152,45 @@ const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 
 function getDays(){
-  // merge defaults with any saved custom exercises
   const customExercises = S.get('custom_exercises', {});
-  return DEFAULT_DAYS.map(d=>({
-    ...d,
-    exercises: customExercises[d.id] || d.exercises
-  }));
+  const splitMeta = S.get('split_day_meta', {});
+  const activeSplit = S.get('active_split','ppl');
+
+  // If a non-PPL split is active, use its schedule as base
+  let baseDays;
+  if(activeSplit !== 'ppl' && SPLIT_TEMPLATES[activeSplit] && SPLIT_TEMPLATES[activeSplit].schedule){
+    baseDays = SPLIT_TEMPLATES[activeSplit].schedule;
+  } else if(activeSplit === 'custom'){
+    // Build from custom day meta
+    const IDS = ['mon','tue','wed','thu','fri','sat'];
+    baseDays = IDS.map(id=>({
+      id, label: splitMeta[id]?splitMeta[id].label:id.toUpperCase(),
+      name: splitMeta[id]?splitMeta[id].name:id.toUpperCase(),
+      hasRun: splitMeta[id]?splitMeta[id].hasRun:false,
+      runType: splitMeta[id]?splitMeta[id].runType:'',
+      bw: splitMeta[id]?splitMeta[id].bw:false,
+      rest: splitMeta[id]?splitMeta[id].rest:false,
+      exercises: []
+    })).filter(d => splitMeta[d.id]);
+  } else {
+    baseDays = DEFAULT_DAYS;
+  }
+
+  // Merge saved custom exercises on top
+  return baseDays
+    .filter(d => !d.rest || customExercises[d.id])
+    .map(d=>{
+      const meta = splitMeta[d.id];
+      return {
+        ...d,
+        name:  meta ? meta.name  : d.name,
+        label: meta ? meta.label : d.label,
+        hasRun: meta ? meta.hasRun : d.hasRun,
+        runType: meta ? meta.runType : d.runType,
+        exercises: customExercises[d.id] !== undefined ? customExercises[d.id] : d.exercises
+      };
+    })
+    .filter(d => d.exercises && d.exercises.length > 0 || d.hasRun);
 }
 
 // ════════════════════════════════════════
@@ -748,10 +1209,14 @@ function init(){
   renderLogDay(activeLogDay);
   renderGTG();
   renderGTGStreak();
+  renderTestDay();
+  applyCustomInputToggle();
+  loadGTGMaxesIntoCalc();
   renderStats();
   loadProfile();
   renderToday();
   buildExEditor();
+  buildSplitTemplates();
   buildColorSwatches();
   loadGTGTargets();
   loadWeightUnit();
@@ -761,15 +1226,15 @@ function init(){
 // VIEW SWITCHING
 // ════════════════════════════════════════
 function switchView(v){
-  ['today','log','gtg','run','plan','stats','settings'].forEach(id=>{
+  ['today','log','gtg','run','plan','stats','timer','settings'].forEach(id=>{
     document.getElementById('view'+cap(id)).classList.toggle('active',id===v);
     document.getElementById('nav'+cap(id)).classList.toggle('active',id===v);
   });
-  if(v==='gtg'){renderGTG();renderGTGStreak();}
+  if(v==='gtg'){renderGTG();renderGTGStreak();renderTestDay();applyCustomInputToggle();loadGTGMaxesIntoCalc();}
   if(v==='run') renderRunTab();
   if(v==='stats'){renderStats();loadProfile();}
   if(v==='today') renderToday();
-  if(v==='settings'){buildExEditor();buildColorSwatches();loadGTGTargets();loadWeightUnit();}
+  if(v==='settings'){buildSplitTemplates();buildExEditor();buildColorSwatches();loadGTGTargets();loadWeightUnit();}
 }
 
 // ════════════════════════════════════════
@@ -1132,16 +1597,465 @@ function saveRun(dayId,silent=false){
 // ════════════════════════════════════════
 function gtgKey(t){return 'gtg_'+t+'_'+today();}
 
-function addGTG(type,n){
-  S.set(gtgKey(type),(S.get(gtgKey(type),0))+n);
-  renderGTG();
-  if(document.getElementById('viewToday').classList.contains('active')) refreshTodayGTG();
+function addGTGSet(type){
+  const setSize = type==='push' ? (S.get('gtg_push_setsize',8)) : (S.get('gtg_sit_setsize',10));
+  addGTG(type, setSize);
+}
+
+function addGTGCustom(type){
+  const inp = document.getElementById('gtg'+cap(type)+'CustomInp');
+  const n = parseInt(inp.value)||0;
+  if(n>0){ addGTG(type,n); inp.value=''; }
+}
+
+function loadGTGMaxesIntoCalc(){
+  const pm=S.get('gtg_push_max',0); const sm=S.get('gtg_sit_max',0);
+  const pi=document.getElementById('calcPushMax'); const si=document.getElementById('calcSitMax');
+  if(pi&&pm) pi.value=pm;
+  if(si&&sm) si.value=sm;
+  if(pm||sm) calcGTG();
+  updateSetBtn('push',S.get('gtg_push_setsize',8));
+  updateSetBtn('sit', S.get('gtg_sit_setsize',10));
+}
+
+// GTG CALCULATOR
+function calcGTG(){
+  const pushMax = parseInt(document.getElementById('calcPushMax').value)||0;
+  const sitMax  = parseInt(document.getElementById('calcSitMax').value)||0;
+  const res = document.getElementById('gtgCalcResults');
+  if(!pushMax && !sitMax){ res.style.display='none'; return; }
+  res.style.display='block';
+  const pushSet = Math.max(1, Math.floor(pushMax*0.4));
+  const sitSet  = Math.max(1, Math.floor(sitMax*0.4));
+  const pushTgt = S.get('gtg_target_push',80);
+  const sitTgt  = S.get('gtg_target_sit',80);
+  document.getElementById('calcPushSet').textContent  = pushMax ? pushSet+' REPS' : '—';
+  document.getElementById('calcSitSet').textContent   = sitMax  ? sitSet+' REPS' : '—';
+  document.getElementById('calcPushSets').textContent = pushMax ? Math.ceil(pushTgt/pushSet)+' SETS' : '—';
+  document.getElementById('calcSitSets').textContent  = sitMax  ? Math.ceil(sitTgt/sitSet)+' SETS' : '—';
+}
+
+function saveGTGMaxes(){
+  const pushMax = parseInt(document.getElementById('calcPushMax').value)||0;
+  const sitMax  = parseInt(document.getElementById('calcSitMax').value)||0;
+  if(pushMax){ const s=Math.max(1,Math.floor(pushMax*0.4)); S.set('gtg_push_setsize',s); S.set('gtg_push_max',pushMax); updateSetBtn('push',s); }
+  if(sitMax){  const s=Math.max(1,Math.floor(sitMax*0.4));  S.set('gtg_sit_setsize',s);  S.set('gtg_sit_max',sitMax);  updateSetBtn('sit',s);  }
+  const f=document.getElementById('gtgMaxFlash');
+  if(f){f.classList.add('show');setTimeout(()=>f.classList.remove('show'),1500);}
+  calcGTG();
+}
+
+function updateSetBtn(type,size){
+  const btn=document.getElementById('gtg'+cap(type)+'SetBtn');
+  if(btn) btn.innerHTML='+'+size+'<span class="gtg-set-label">SET</span>';
+  const badge=document.getElementById('gtg'+cap(type)+'SizeBadge');
+  if(badge) badge.textContent='SET SIZE: '+size;
+}
+
+// TEST DAY
+function saveTestStart(){
+  const val=document.getElementById('gtgStartDate').value;
+  if(val){ S.set('gtg_start_date',val); renderTestDay(); }
+}
+
+function renderTestDay(){
+  const start=S.get('gtg_start_date','');
+  const dateEl=document.getElementById('gtgTestDate');
+  const countEl=document.getElementById('gtgTestCountdown');
+  const daysEl=document.getElementById('gtgTestDaysLeft');
+  const startInp=document.getElementById('gtgStartDate');
+  if(startInp && start) startInp.value=start;
+  if(!start){
+    if(dateEl) dateEl.textContent='SET YOUR START DATE BELOW';
+    if(countEl) countEl.textContent='Pick the date you started training';
+    if(daysEl) daysEl.textContent='';
+    return;
+  }
+  const startD=new Date(start);
+  const now=new Date();
+  const msPerDay=86400000;
+  const daysSinceStart=Math.floor((now-startD)/msPerDay);
+  // find next test day: every 28 days (4 weeks) on a saturday
+  let nextTest=new Date(startD);
+  // advance to first saturday on or after start
+  while(nextTest.getDay()!==6) nextTest.setDate(nextTest.getDate()+1);
+  // now advance in 28-day chunks until we're in the future
+  while(nextTest<=now) nextTest.setDate(nextTest.getDate()+28);
+  const daysLeft=Math.ceil((nextTest-now)/msPerDay);
+  const opts={weekday:'short',day:'numeric',month:'short'};
+  if(dateEl) dateEl.textContent='NEXT TEST: '+nextTest.toLocaleDateString('en-AU',opts).toUpperCase();
+  if(countEl) countEl.textContent=daysLeft===0?'TEST DAY — GO MAX TODAY!':(daysLeft+' DAYS AWAY · Max reps in 2 min on a Saturday');
+  if(daysEl){
+    daysEl.textContent=daysLeft===0?'NOW':daysLeft+'d';
+    daysEl.style.color=daysLeft<=3?'#e05252':'var(--accent)';
+  }
+}
+
+// CUSTOM INPUT TOGGLE
+function toggleCustomInput(){
+  const on=!S.get('gtg_custom_input',false);
+  S.set('gtg_custom_input',on);
+  applyCustomInputToggle();
+}
+
+function applyCustomInputToggle(){
+  const on=S.get('gtg_custom_input',false);
+  const tog=document.getElementById('customInputToggle');
+  if(tog) tog.classList.toggle('on',on);
+  ['push','sit'].forEach(t=>{
+    const row=document.getElementById('gtg'+cap(t)+'Custom');
+    if(row) row.style.display=on?'flex':'none';
+  });
+}
+
+// CALORIE CALCULATOR
+function calcCalories(){
+  const p=S.get('profile',{});
+  const h=p.height||0, w=p.weight||0, a=p.age||0;
+  if(!h||!w||!a){
+    alert('Please fill in Height, Weight, and Age in the profile section first.');
+    return;
+  }
+  const activity=parseFloat(document.getElementById('calActivity').value)||1.55;
+  // Mifflin-St Jeor for male (using male formula — can adjust if needed)
+  const bmr = 10*w + 6.25*h - 5*a + 5;
+  const tdee = Math.round(bmr * activity);
+  const cut  = tdee - 300;
+  const bulk = tdee + 300;
+  // macros for maintenance: protein=2g/kg, fat=25% cals, carbs=rest
+  const protG = Math.round(w*2);
+  const fatG  = Math.round((tdee*0.25)/9);
+  const carbG = Math.round((tdee - protG*4 - fatG*9)/4);
+  document.getElementById('calCut').textContent   = cut;
+  document.getElementById('calMaint').textContent  = tdee;
+  document.getElementById('calBulk').textContent   = bulk;
+  document.getElementById('macroProtein').textContent = protG+'g';
+  document.getElementById('macroCarbs').textContent   = carbG+'g';
+  document.getElementById('macroFat').textContent     = fatG+'g';
+  document.getElementById('calResult').style.display='block';
 }
 
 function resetGTG(type){
   S.set(gtgKey(type),0);
   renderGTG();
   if(document.getElementById('viewToday').classList.contains('active')) refreshTodayGTG();
+}
+
+function renderGTGStreak(){
+  const container=document.getElementById('gtgStreak');
+  if(!container) return;
+  const days=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const todayDate=new Date();
+  container.innerHTML='';
+  for(let i=6;i>=0;i--){
+    const d=new Date(todayDate);d.setDate(d.getDate()-i);
+    const dk=d.toISOString().slice(0,10);
+    // check if any GTG was done that day
+    const pushDone=S.get('gtg_push_'+dk,0)>0;
+    const sitDone=S.get('gtg_sit_'+dk,0)>0;
+    const filled=pushDone||sitDone;
+    const isToday=dk===today();
+    const div=document.createElement('div');
+    div.className='streak-day'+(filled?' filled':'')+(isToday?' today':'');
+    div.innerHTML=`<div class="streak-dlbl">${days[d.getDay()]}</div><div class="streak-dot"></div>`;
+    container.appendChild(div);
+  }
+}
+
+// ════════════════════════════════════════
+// STATS
+// ════════════════════════════════════════
+function renderStats(){
+  let totalSets=0,totalVol=0,sessions=new Set();
+  const pbs={};
+  getDays().forEach(day=>{
+    const hist=S.get('hist_'+day.id,[]);
+    hist.forEach(entry=>{
+      sessions.add(entry.date+'_'+day.id);
+      entry.sets.forEach(s=>{
+        totalSets++;
+        totalVol+=(parseFloat(s.weight)||0)*(parseFloat(s.reps)||0);
+        const w=parseFloat(s.weight)||0;
+        // only track weight PBs for weighted exercises (not bodyweight)
+        if(w>0 && (!pbs[entry.exName]||pbs[entry.exName]<w)) pbs[entry.exName]=w;
+      });
+    });
+  });
+  // streak
+  let streak=0;
+  const t=new Date();
+  for(let i=0;i<365;i++){
+    const d=new Date(t);d.setDate(d.getDate()-i);
+    const k=d.toISOString().slice(0,10);
+    const worked=getDays().some(day=>Object.keys(S.get('log_'+day.id+'_'+k,{})).length>0)||S.get('gtg_push_'+k,0)>0||S.get('gtg_sit_'+k,0)>0;
+    if(worked)streak++;else if(i>0)break;
+  }
+
+  document.getElementById('stSessions').textContent=sessions.size;
+  document.getElementById('stSets').textContent=totalSets;
+  document.getElementById('stTonnes').textContent=totalVol>0?(totalVol/1000).toFixed(1)+'T':'0';
+  document.getElementById('stStreak').textContent=streak;
+  document.getElementById('stGTGPush').textContent=S.get('gtg_push_'+today(),0);
+  document.getElementById('stGTGSit').textContent=S.get('gtg_sit_'+today(),0);
+
+  // PBs — weighted only
+  const pbe=Object.entries(pbs).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,15);
+  document.getElementById('pbList').innerHTML=pbe.length
+    ?pbe.map(([n,v])=>`<div class="pb-row"><div class="pb-ex">${n}</div><div class="pb-v">${v} kg</div></div>`).join('')
+    :'<div class="no-data">Log weighted sessions to see PBs</div>';
+
+  // Run history
+  let allRuns=[];
+  getDays().filter(d=>d.hasRun).forEach(day=>{
+    const hist=S.get('run_hist_'+day.id,[]);
+    hist.forEach(r=>allRuns.push({...r,dayLabel:day.label+' '+RUN_TYPE_LABEL[day.runType]}));
+  });
+  allRuns.sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById('runHistory').innerHTML=allRuns.length
+    ?allRuns.slice(0,10).map(r=>`<div class="pb-row"><div class="pb-ex"><div>${r.dayLabel}</div><div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim)">${r.date}</div></div><div style="text-align:right"><div class="pb-v">${r.dist?r.dist+'km':''} ${r.time||''}</div>${r.feel?`<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim)">${r.feel}</div>`:''}</div></div>`).join('')
+    :'<div class="no-data">No runs logged yet — log runs in the LOG tab</div>';
+}
+
+// PROFILE
+function saveProfile(){
+  const h=parseFloat(document.getElementById('profHeight').value)||0;
+  const w=parseFloat(document.getElementById('profWeight').value)||0;
+  const a=parseFloat(document.getElementById('profAge').value)||0;
+  S.set('profile',{height:h,weight:w,age:a});
+  updateBMI(h,w); updateProtein(w);
+  const f=document.getElementById('profFlash');
+  if(f){f.classList.add('show');setTimeout(()=>f.classList.remove('show'),1500);}
+}
+
+function updateBMI(h,w){
+  const row=document.getElementById('bmiRow');
+  if(!h||!w){if(row)row.style.display='none';return;}
+  const bmi=w/Math.pow(h/100,2);
+  let cat,col;
+  if(bmi<18.5){cat='UNDERWEIGHT';col='#4fa3e8';}
+  else if(bmi<25){cat='NORMAL';col='#4caf50';}
+  else if(bmi<30){cat='OVERWEIGHT';col='#f8834a';}
+  else{cat='OBESE';col='#e05252';}
+  if(row)row.style.display='flex';
+  const bv=document.getElementById('bmiVal');const bc=document.getElementById('bmiCat');
+  if(bv){bv.textContent=bmi.toFixed(1);bv.style.color=col;}
+  if(bc){bc.textContent=cat;bc.style.color=col;}
+}
+
+function updateProtein(w){
+  const el=document.getElementById('profProtein');
+  if(el) el.value=w>0?Math.round(w*2)+'g':'';
+}
+
+function loadProfile(){
+  const p=S.get('profile',{});
+  if(p.height)document.getElementById('profHeight').value=p.height;
+  if(p.weight){document.getElementById('profWeight').value=p.weight;updateProtein(p.weight);}
+  if(p.age)document.getElementById('profAge').value=p.age;
+  if(p.height&&p.weight)updateBMI(p.height,p.weight);
+}
+
+// ════════════════════════════════════════
+// SETTINGS — EXERCISE EDITOR
+// ════════════════════════════════════════
+function buildExEditor(){
+  const container=document.getElementById('exEditorSections');
+  container.innerHTML='';
+  getDays().forEach(day=>{
+    const sec=document.createElement('div');
+    sec.className='settings-section';
+    sec.id='exSec_'+day.id;
+    const total=day.exercises.length;
+    const exItems=day.exercises.map((ex,i)=>`
+      <div class="ex-list-item" id="exItem_${day.id}_${i}">
+        <span class="ex-list-name">${ex}</span>
+        <input class="ex-edit-inp" style="display:none" value="${ex}" id="exInp_${day.id}_${i}">
+        <button class="ex-list-btn" onclick="moveEx('${day.id}',${i},-1)" ${i===0?'style="opacity:0.2;pointer-events:none"':''}>↑</button>
+        <button class="ex-list-btn" onclick="moveEx('${day.id}',${i},1)" ${i===total-1?'style="opacity:0.2;pointer-events:none"':''}>↓</button>
+        <button class="ex-list-btn" onclick="editEx('${day.id}',${i})">EDIT</button>
+        <button class="ex-list-btn del" onclick="delEx('${day.id}',${i})">✕</button>
+      </div>`).join('');
+    sec.innerHTML=`
+      <div class="settings-hd" onclick="toggleSettingsSec('${day.id}')">
+        <div class="settings-hd-left">
+          <div class="settings-icon">${day.label}</div>
+          <div class="settings-name">${day.name}</div>
+        </div>
+        <div class="settings-arrow">▼</div>
+      </div>
+      <div class="settings-body">
+        <div style="margin-top:4px" id="exList_${day.id}">${exItems}</div>
+        <div class="add-ex-row">
+          <input class="add-ex-inp" placeholder="Add new exercise..." id="addExInp_${day.id}">
+          <button class="add-ex-btn" onclick="addEx('${day.id}')">ADD</button>
+        </div>
+        <button class="clear-btn" style="font-size:9px;padding:7px 12px;margin-top:10px" onclick="resetDay('${day.id}')">RESET TO DEFAULT</button>
+      </div>`;
+    container.appendChild(sec);
+  });
+}
+
+function toggleSettingsSec(dayId){
+  document.getElementById('exSec_'+dayId).classList.toggle('open');
+}
+
+function saveCustomExercises(dayId){
+  const day=getDays().find(d=>d.id===dayId);
+  const all=S.get('custom_exercises',{});
+  all[dayId]=day.exercises; // already mutated
+  S.set('custom_exercises',all);
+}
+
+function editEx(dayId,idx){
+  const nameEl=document.getElementById(`exItem_${dayId}_${idx}`).querySelector('.ex-list-name');
+  const inp=document.getElementById(`exInp_${dayId}_${idx}`);
+  const btn=document.getElementById(`exItem_${dayId}_${idx}`).querySelector('.ex-list-btn');
+  if(nameEl.style.display==='none'){
+    // save
+    const newName=inp.value.trim();
+    if(!newName)return;
+    const custom=S.get('custom_exercises',{});
+    const day=DEFAULT_DAYS.find(d=>d.id===dayId);
+    const exArr=custom[dayId]||(day?[...day.exercises]:[]);
+    exArr[idx]=newName;
+    custom[dayId]=exArr;
+    S.set('custom_exercises',custom);
+    nameEl.textContent=newName;
+    nameEl.style.display='';
+    inp.style.display='none';
+    btn.textContent='EDIT';
+    buildDayStrip(); renderLogDay(activeLogDay);
+  } else {
+    nameEl.style.display='none';
+    inp.style.display='block';
+    inp.focus();
+    btn.textContent='SAVE';
+  }
+}
+
+function delEx(dayId,idx){
+  const custom=S.get('custom_exercises',{});
+  const day=DEFAULT_DAYS.find(d=>d.id===dayId);
+  const exArr=custom[dayId]||(day?[...day.exercises]:[]);
+  exArr.splice(idx,1);
+  custom[dayId]=exArr;
+  S.set('custom_exercises',custom);
+  buildExEditor(); buildDayStrip(); renderLogDay(activeLogDay);
+}
+
+function addEx(dayId){
+  const inp=document.getElementById('addExInp_'+dayId);
+  const name=inp.value.trim();
+  if(!name)return;
+  const custom=S.get('custom_exercises',{});
+  const day=DEFAULT_DAYS.find(d=>d.id===dayId);
+  const exArr=custom[dayId]||(day?[...day.exercises]:[]);
+  exArr.push(name);
+  custom[dayId]=exArr;
+  S.set('custom_exercises',custom);
+  inp.value='';
+  buildExEditor(); buildDayStrip(); renderLogDay(activeLogDay);
+}
+
+function resetDay(dayId){
+  if(!confirm('Reset '+dayId.toUpperCase()+' to default exercises?'))return;
+  const custom=S.get('custom_exercises',{});
+  delete custom[dayId];
+  S.set('custom_exercises',custom);
+  buildExEditor(); buildDayStrip(); renderLogDay(activeLogDay);
+}
+
+function moveEx(dayId,idx,dir){
+  const custom=S.get('custom_exercises',{});
+  const day=DEFAULT_DAYS.find(d=>d.id===dayId);
+  const exArr=custom[dayId]||(day?[...day.exercises]:[]);
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=exArr.length)return;
+  const tmp=exArr[idx];
+  exArr[idx]=exArr[newIdx];
+  exArr[newIdx]=tmp;
+  custom[dayId]=exArr;
+  S.set('custom_exercises',custom);
+  buildExEditor();
+  // re-open the section that was being edited
+  const sec=document.getElementById('exSec_'+dayId);
+  if(sec) sec.classList.add('open');
+  buildDayStrip(); renderLogDay(activeLogDay);
+}
+
+// ════════════════════════════════════════
+// SETTINGS — COLOURS
+// ════════════════════════════════════════
+function buildColorSwatches(){
+  const accentSaved=S.get('ui_accent','#c8a84b');
+  const bgSaved=S.get('ui_bg','#080808');
+  const logNumSaved=S.get('ui_log_num','#909090');
+  const ac=document.getElementById('accentSwatches');
+  const bgc=document.getElementById('bgSwatches');
+  const lnc=document.getElementById('logNumSwatches');
+  if(!ac||!bgc)return;
+  ac.innerHTML=ACCENT_COLORS.map(c=>`<div class="color-swatch${c===accentSaved?' active':''}" style="background:${c}" onclick="setAccent('${c}')"></div>`).join('');
+  bgc.innerHTML=BG_COLORS.map(c=>`<div class="color-swatch${c===bgSaved?' active':''}" style="background:${c};border:1px solid #333" onclick="setBg('${c}')"></div>`).join('');
+  if(lnc) lnc.innerHTML=LOG_NUM_COLORS.map(c=>`<div class="color-swatch${c===logNumSaved?' active':''}" style="background:${c};border:1px solid #333" onclick="setLogNum('${c}')"></div>`).join('');
+}
+
+function setAccent(c){
+  S.set('ui_accent',c);
+  document.documentElement.style.setProperty('--accent',c);
+  // update accent-dim
+  const rgb=hexToRgb(c);
+  if(rgb){
+    document.documentElement.style.setProperty('--accent-dim',`rgba(${rgb},0.12)`);
+    document.documentElement.style.setProperty('--accent-dim2',`rgba(${rgb},0.05)`);
+  }
+  buildColorSwatches();
+}
+
+function setBg(c){
+  S.set('ui_bg',c);
+  document.documentElement.style.setProperty('--bg',c);
+  document.documentElement.style.setProperty('--panel',lighten(c,8));
+  document.documentElement.style.setProperty('--panel2',lighten(c,14));
+  buildColorSwatches();
+}
+
+function setLogNum(c){
+  S.set('ui_log_num',c);
+  document.documentElement.style.setProperty('--log-num',c);
+  buildColorSwatches();
+}
+
+function hexToRgb(hex){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+function lighten(hex,amt){
+  const r=Math.min(255,parseInt(hex.slice(1,3),16)+amt);
+  const g=Math.min(255,parseInt(hex.slice(3,5),16)+amt);
+  const b=Math.min(255,parseInt(hex.slice(5,7),16)+amt);
+  return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+function applyStoredColors(){
+  const accent=S.get('ui_accent','');
+  const bg=S.get('ui_bg','');
+  const logNum=S.get('ui_log_num','');
+  if(accent) setAccent(accent);
+  if(bg) setBg(bg);
+  if(logNum) setLogNum(logNum);
+}
+
+function resetColors(){
+  S.set('ui_accent','#c8a84b'); S.set('ui_bg','#080808'); S.set('ui_log_num','#909090');
+  document.documentElement.style.setProperty('--accent','#c8a84b');
+  document.documentElement.style.setProperty('--accent-dim','rgba(200,168,75,0.12)');
+  document.documentElement.style.setProperty('--accent-dim2','rgba(200,168,75,0.05)');
+  document.documentElement.style.setProperty('--bg','#080808');
+  document.documentElement.style.setProperty('--panel','#101010');
+  document.documentElement.style.setProperty('--panel2','#161616');
+  document.documentElement.style.setProperty('--log-num','#909090');
+  buildColorSwatches();
 }
 
 function renderGTG(){
@@ -1275,6 +2189,151 @@ function loadProfile(){
   if(p.weight){document.getElementById('profWeight').value=p.weight;updateProtein(p.weight);}
   if(p.age)document.getElementById('profAge').value=p.age;
   if(p.height&&p.weight)updateBMI(p.height,p.weight);
+}
+
+let pendingSplitKey = null;
+
+function buildSplitTemplates(){
+  const grid = document.getElementById('splitTemplateGrid');
+  if(!grid) return;
+  const current = S.get('active_split','ppl');
+  grid.innerHTML = Object.entries(SPLIT_TEMPLATES).map(([key,t])=>`
+    <div class="split-card${current===key?' active-split':''}" onclick="selectSplitTemplate('${key}')">
+      <div class="split-card-tag">${t.days}</div>
+      <div class="split-card-name">${t.name}</div>
+      <div class="split-card-days">${t.desc}</div>
+    </div>`).join('');
+
+  // confirm box
+  if(!document.getElementById('splitConfirmBox')){
+    const box = document.createElement('div');
+    box.className='split-confirm'; box.id='splitConfirmBox';
+    box.innerHTML=`<div class="split-confirm-text" id="splitConfirmText"></div>
+      <div class="split-confirm-btns">
+        <button class="split-confirm-yes" onclick="applySelectedSplit()">YES, SWITCH</button>
+        <button class="split-confirm-no" onclick="cancelSplitSelect()">CANCEL</button>
+      </div>`;
+    grid.parentNode.insertBefore(box, grid.nextSibling);
+  }
+
+  // custom builder
+  const cb = document.getElementById('customSplitBuilder');
+  if(cb) cb.style.display = current==='custom'?'block':'none';
+  if(current==='custom') buildCustomDaysList();
+}
+
+function selectSplitTemplate(key){
+  pendingSplitKey = key;
+  const box = document.getElementById('splitConfirmBox');
+  const txt = document.getElementById('splitConfirmText');
+  if(!box||!txt) return;
+
+  if(key==='custom'){
+    txt.textContent='Switch to a fully custom split? You can add your own days and exercises.';
+  } else {
+    const t = SPLIT_TEMPLATES[key];
+    txt.textContent=`Switch to ${t.label}? This will replace your current exercise list. Your logged data is kept.`;
+  }
+  box.style.display='block';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function applySelectedSplit(){
+  if(!pendingSplitKey) return;
+  const key = pendingSplitKey;
+  S.set('active_split', key);
+
+  if(key !== 'custom'){
+    const t = SPLIT_TEMPLATES[key];
+    // save as custom exercises
+    const custom = {};
+    t.schedule.forEach(d=>{ custom[d.id] = [...d.exercises]; });
+    S.set('custom_exercises', custom);
+    // save day metadata (hasRun, runType, bw, rest, name, label)
+    const meta = {};
+    t.schedule.forEach(d=>{ meta[d.id]={name:d.name,label:d.label,hasRun:!!d.hasRun,runType:d.runType||'',bw:!!d.bw,rest:!!d.rest}; });
+    S.set('split_day_meta', meta);
+  }
+
+  document.getElementById('splitConfirmBox').style.display='none';
+  pendingSplitKey = null;
+  buildSplitTemplates();
+  buildExEditor();
+  buildDayStrip();
+  renderLogDay(activeLogDay);
+
+  // show custom builder if needed
+  const cb = document.getElementById('customSplitBuilder');
+  if(cb) cb.style.display = key==='custom'?'block':'none';
+  if(key==='custom') buildCustomDaysList();
+}
+
+function cancelSplitSelect(){
+  pendingSplitKey = null;
+  const box = document.getElementById('splitConfirmBox');
+  if(box) box.style.display='none';
+}
+
+// Custom day builder
+let customDays = [];
+
+function buildCustomDaysList(){
+  customDays = S.get('custom_split_days', [
+    {id:'day1',label:'DAY 1',name:''},
+    {id:'day2',label:'DAY 2',name:''},
+    {id:'day3',label:'DAY 3',name:''}
+  ]);
+  renderCustomDays();
+}
+
+function renderCustomDays(){
+  const container = document.getElementById('customDaysList');
+  if(!container) return;
+  container.innerHTML = customDays.map((d,i)=>`
+    <div class="custom-day-row">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--dim);width:40px;flex-shrink:0">${d.label}</div>
+      <input class="custom-day-inp" placeholder="Day name (e.g. CHEST)" value="${d.name}" oninput="updateCustomDay(${i},this.value)">
+      <button class="ex-list-btn del" onclick="removeCustomDay(${i})">✕</button>
+    </div>`).join('');
+  container.innerHTML += `<button class="apply-split-btn" onclick="saveCustomSplit()">SAVE CUSTOM SPLIT</button>`;
+}
+
+function updateCustomDay(i, val){
+  customDays[i].name = val.toUpperCase();
+}
+
+function addCustomDay(){
+  const n = customDays.length+1;
+  customDays.push({id:'day'+n, label:'DAY '+n, name:''});
+  S.set('custom_split_days', customDays);
+  renderCustomDays();
+}
+
+function removeCustomDay(i){
+  customDays.splice(i,1);
+  S.set('custom_split_days', customDays);
+  renderCustomDays();
+}
+
+function saveCustomSplit(){
+  if(!customDays.some(d=>d.name.trim())){
+    alert('Name at least one day first.'); return;
+  }
+  S.set('custom_split_days', customDays);
+  // Build schedule from custom days
+  const IDS = ['mon','tue','wed','thu','fri','sat','sun'];
+  const custom = {}; const meta = {};
+  customDays.forEach((d,i)=>{
+    const id = IDS[i]||('day'+i);
+    d.id = id;
+    custom[id] = [];
+    meta[id] = {name:d.name||'DAY '+(i+1), label:(d.label||'D'+(i+1)).toUpperCase(), hasRun:false, runType:'', bw:false, rest:false};
+  });
+  S.set('custom_exercises', custom);
+  S.set('split_day_meta', meta);
+  S.set('active_split','custom');
+  buildExEditor(); buildDayStrip(); renderLogDay(activeLogDay);
+  alert('Custom split saved! Go to the Edit Exercises section to add exercises to each day.');
 }
 
 // ════════════════════════════════════════
@@ -1760,6 +2819,216 @@ function checkSnapback(){
   const info = document.getElementById('snapRestoreInfo');
   if(btn) btn.style.display = exists ? 'block' : 'none';
   if(info) info.style.display = exists ? 'block' : 'none';
+}
+
+// ════════════════════════════════════════
+// TIMER TAB
+// ════════════════════════════════════════
+
+// ── WORKOUT TIMER ──
+let wkInterval = null;
+let wkRunning = false;
+let wkStartTime = 0;
+let wkElapsed = 0;  // ms accumulated before last pause
+
+function wkToggle(){
+  if(wkRunning){
+    // Pause
+    wkElapsed += Date.now() - wkStartTime;
+    clearInterval(wkInterval);
+    wkRunning = false;
+    document.getElementById('wkStartBtn').textContent = 'RESUME SESSION';
+    document.getElementById('wkStartBtn').classList.remove('pause');
+    document.getElementById('wkStatusBadge').textContent = 'PAUSED';
+    document.getElementById('wkStatusBadge').className = 'timer-status-badge paused';
+    document.getElementById('wkTimerDisplay').classList.remove('running');
+  } else {
+    // Start/resume
+    wkStartTime = Date.now();
+    wkRunning = true;
+    wkInterval = setInterval(wkTick, 100);
+    document.getElementById('wkStartBtn').textContent = 'PAUSE SESSION';
+    document.getElementById('wkStartBtn').classList.add('pause');
+    document.getElementById('wkStatusBadge').textContent = 'RUNNING';
+    document.getElementById('wkStatusBadge').className = 'timer-status-badge running';
+    document.getElementById('wkTimerDisplay').classList.add('running');
+  }
+}
+
+function wkTick(){
+  const total = wkElapsed + (Date.now() - wkStartTime);
+  const h = Math.floor(total/3600000);
+  const m = Math.floor((total%3600000)/60000);
+  const s = Math.floor((total%60000)/1000);
+  document.getElementById('wkTimerDisplay').textContent =
+    String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+
+function wkReset(){
+  if(wkRunning){ clearInterval(wkInterval); wkRunning=false; }
+  wkElapsed=0; wkStartTime=0;
+  document.getElementById('wkTimerDisplay').textContent='00:00:00';
+  document.getElementById('wkTimerDisplay').classList.remove('running');
+  document.getElementById('wkStartBtn').textContent='START SESSION';
+  document.getElementById('wkStartBtn').classList.remove('pause');
+  document.getElementById('wkStatusBadge').textContent='READY';
+  document.getElementById('wkStatusBadge').className='timer-status-badge';
+}
+
+// ── REST TIMER ──
+let restInterval = null;
+let restRunning = false;
+let restTotal = 120;   // total seconds for current selection
+let restRemaining = 120;
+let restSetCount = 0;
+const CIRCUMFERENCE = 2 * Math.PI * 88; // 553px
+
+function setRest(secs){
+  if(restRunning) restStop();
+  restTotal = secs;
+  restRemaining = secs;
+  restSetCount = 0;
+  updateRestDisplay();
+  // update preset highlights
+  [60,90,120,180,240].forEach(s=>{
+    const el=document.getElementById('rp'+s);
+    if(el) el.classList.toggle('active', s===secs);
+  });
+  document.getElementById('restStartBtn').textContent='START REST';
+  document.getElementById('restStartBtn').classList.remove('counting');
+}
+
+function setCustomRest(){
+  const m = parseInt(document.getElementById('customMins').value)||0;
+  const s = parseInt(document.getElementById('customSecs').value)||0;
+  const total = m*60+s;
+  if(total<1) return;
+  [60,90,120,180,240].forEach(sec=>{
+    const el=document.getElementById('rp'+sec);
+    if(el) el.classList.remove('active');
+  });
+  restTotal = total;
+  restRemaining = total;
+  restSetCount = 0;
+  if(restRunning) restStop();
+  updateRestDisplay();
+}
+
+function restToggle(){
+  if(restRunning){ restStop(); }
+  else { restStart(); }
+}
+
+function restStart(){
+  if(restRemaining<=0) restRemaining=restTotal;
+  restRunning=true;
+  restSetCount++;
+  restInterval = setInterval(restTick, 1000);
+  document.getElementById('restStartBtn').textContent='STOP';
+  document.getElementById('restStartBtn').classList.add('counting');
+  document.getElementById('restTimerLabel').textContent='REST';
+}
+
+function restStop(){
+  clearInterval(restInterval);
+  restRunning=false;
+  restRemaining=restTotal;
+  updateRestDisplay();
+  document.getElementById('restStartBtn').textContent='START REST';
+  document.getElementById('restStartBtn').classList.remove('counting');
+}
+
+function restSkip(){
+  if(restRunning){ clearInterval(restInterval); restRunning=false; }
+  restRemaining=0;
+  updateRestDisplay();
+  restDone();
+}
+
+function restTick(){
+  restRemaining--;
+  updateRestDisplay();
+  if(restRemaining<=0) restDone();
+}
+
+function restDone(){
+  clearInterval(restInterval);
+  restRunning=false;
+  // Log the set
+  logRestSet(restTotal - restRemaining <= 1 ? restTotal : restTotal);
+  // Visual done state
+  const disp = document.getElementById('restTimerDisplay');
+  const ring = document.getElementById('restRingFill');
+  const lbl  = document.getElementById('restTimerLabel');
+  if(disp){ disp.textContent='DONE'; disp.className='rest-timer-display done'; }
+  if(ring) ring.className='rest-ring-fill done';
+  if(lbl) lbl.textContent='GO!';
+  document.getElementById('restStartBtn').textContent='START REST';
+  document.getElementById('restStartBtn').classList.remove('counting');
+  // Vibrate on iPhone
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+  // Reset after 2s
+  setTimeout(()=>{
+    restRemaining=restTotal;
+    updateRestDisplay();
+    if(disp) disp.className='rest-timer-display';
+    if(ring) ring.className='rest-ring-fill';
+    if(lbl) lbl.textContent='REST';
+  }, 2000);
+}
+
+function updateRestDisplay(){
+  const m = Math.floor(restRemaining/60);
+  const s = restRemaining%60;
+  const disp = document.getElementById('restTimerDisplay');
+  const ring = document.getElementById('restRingFill');
+  const progress = restTotal>0 ? restRemaining/restTotal : 1;
+  const offset = CIRCUMFERENCE * (1-progress);
+  if(disp){
+    disp.textContent = m+':'+String(s).padStart(2,'0');
+    disp.className = 'rest-timer-display'+(restRemaining<=5&&restRemaining>0?' urgent':'');
+  }
+  if(ring){
+    ring.style.strokeDasharray = CIRCUMFERENCE;
+    ring.style.strokeDashoffset = offset;
+    ring.className = 'rest-ring-fill'+(restRemaining<=5&&restRemaining>0?' urgent':'');
+  }
+}
+
+function logRestSet(restSecs){
+  const logs = S.get('set_log_today_'+today(),[]);
+  // Try to get active day name
+  const dayId = activeLogDay || 'today';
+  const setNum = logs.filter(l=>l.day===dayId).length+1;
+  logs.push({
+    day: dayId,
+    set: setNum,
+    rest: restSecs,
+    time: new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})
+  });
+  S.set('set_log_today_'+today(), logs);
+  renderSetLog();
+}
+
+function renderSetLog(){
+  const logs = S.get('set_log_today_'+today(),[]);
+  const container = document.getElementById('setLogList');
+  if(!container) return;
+  if(!logs.length){
+    container.innerHTML='<div class="no-data">Start a rest timer after each set — it logs here automatically</div>';
+    return;
+  }
+  container.innerHTML = logs.slice().reverse().map((l,i)=>`
+    <div class="set-log-row">
+      <div class="set-log-ex">${l.time||''} <span style="color:var(--dim)">${l.day.toUpperCase()}</span></div>
+      <div class="set-log-set">SET ${l.set}</div>
+      <div class="set-log-rest">${Math.floor(l.rest/60)}:${String(l.rest%60).padStart(2,'0')}</div>
+    </div>`).join('');
+}
+
+function clearSetLog(){
+  S.set('set_log_today_'+today(),[]);
+  renderSetLog();
 }
 
 init();
