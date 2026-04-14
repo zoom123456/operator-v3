@@ -226,6 +226,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .gtg-target-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);}
 .gtg-target-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);line-height:1;}
 .gtg-setsize-badge{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--dim);margin-top:4px;}
+.gtg-nextset-banner{display:none;background:rgba(200,168,75,0.08);border-top:1px solid rgba(200,168,75,0.15);padding:8px 14px;}
+.gtg-nextset-banner.show{display:block;}
+.gtg-nextset-label{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:3px;}
+.gtg-nextset-time{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);letter-spacing:2px;line-height:1;}
 .gtg-btns-grid{display:grid;grid-template-columns:1fr 2fr 1fr 1fr 1fr;gap:1px;background:var(--border);border-top:1px solid var(--border);}
 .gtg-btn-main,.gtg-btn-set,.gtg-btn-rst{text-align:center;padding:10px 4px;cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;transition:background 0.15s;user-select:none;-webkit-user-select:none;}
 .gtg-btn-main{background:var(--panel2);color:var(--accent);}
@@ -269,6 +273,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .gtg-result-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px;text-transform:uppercase;}
 .gtg-save-btn{display:block;width:100%;background:var(--accent);border:none;color:#000;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;padding:12px;cursor:pointer;text-transform:uppercase;transition:opacity 0.15s;}
 .gtg-save-btn:active{opacity:0.7;}
+
+/* LAST 7 DAYS STREAK */
+.streak-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
+.streak-day{background:var(--panel);border:1px solid var(--border);padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:border-color 0.2s;}
+.streak-day.filled{background:rgba(200,168,75,0.08);border-color:rgba(200,168,75,0.3);}
+.streak-day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;}
+.streak-dlbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;text-align:center;}
+.streak-day.filled .streak-dlbl{color:var(--accent);}
+.streak-day.today .streak-dlbl{color:var(--accent);}
+.streak-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background 0.2s;}
+.streak-day.filled .streak-dot{background:var(--accent);}
+.streak-day.today:not(.filled) .streak-dot{background:rgba(200,168,75,0.3);}
 
 /* MONTH 6 GRID */
 .gtg-targets-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:20px;}
@@ -419,6 +435,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .wk-hist-left{}
 .wk-hist-day{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--bright);line-height:1;}
 .wk-hist-date{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:3px;}
+.wk-hist-times{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1px;margin-top:2px;}
 .wk-hist-dur{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--accent);letter-spacing:2px;line-height:1;text-align:right;}
 .wk-hist-dur-lbl{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1px;text-align:right;margin-top:2px;}
 .wk-hist-del{background:none;border:none;color:var(--dim);font-size:18px;cursor:pointer;padding:4px 6px;line-height:1;transition:color 0.15s;flex-shrink:0;align-self:center;}
@@ -554,6 +571,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
           </div>
           <div class="gtg-setsize-badge" id="gtgPushSizeBadge">SET SIZE: 8</div>
         </div>
+        <div class="gtg-nextset-banner" id="gtgPushNextSet">
+          <div class="gtg-nextset-label">// NEXT SET WINDOW</div>
+          <div class="gtg-nextset-time" id="gtgPushNextTime">—</div>
+        </div>
         <div class="gtg-btns-grid" id="gtgPushBtns">
           <div class="gtg-btn-main" onclick="addGTG('push',1)">+1</div>
           <div class="gtg-btn-set" id="gtgPushSetBtn" onclick="addGTGSet('push')">+8<span class="gtg-set-label">SET</span></div>
@@ -577,6 +598,10 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
             <span class="gtg-target-num" id="gtgSitTgt">80</span>
           </div>
           <div class="gtg-setsize-badge" id="gtgSitSizeBadge">SET SIZE: 10</div>
+        </div>
+        <div class="gtg-nextset-banner" id="gtgSitNextSet">
+          <div class="gtg-nextset-label">// NEXT SET WINDOW</div>
+          <div class="gtg-nextset-time" id="gtgSitNextTime">—</div>
         </div>
         <div class="gtg-btns-grid" id="gtgSitBtns">
           <div class="gtg-btn-main" onclick="addGTG('sit',1)">+1</div>
@@ -1627,6 +1652,21 @@ function addGTG(type,n){
   S.set(gtgKey(type),(S.get(gtgKey(type),0))+n);
   renderGTG();
   if(document.getElementById('viewToday').classList.contains('active')) refreshTodayGTG();
+  showNextSetWindow(type);
+}
+
+function showNextSetWindow(type){
+  const banner = document.getElementById('gtg'+cap(type)+'NextSet');
+  const timeEl = document.getElementById('gtg'+cap(type)+'NextTime');
+  if(!banner || !timeEl) return;
+
+  const now = new Date();
+  const min30 = new Date(now.getTime() + 30*60*1000);
+  const min60 = new Date(now.getTime() + 60*60*1000);
+
+  const fmt = d => d.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});
+  timeEl.textContent = fmt(min30) + '  –  ' + fmt(min60);
+  banner.classList.add('show');
 }
 
 function addGTGSet(type){
@@ -2862,6 +2902,7 @@ let wkInterval = null;
 let wkRunning = false;
 let wkStartTime = 0;
 let wkElapsed = 0;  // ms accumulated before last pause
+let wkSessionStartTime = null; // actual clock time session first started
 
 function wkToggle(){
   const startBtn = document.getElementById('wkStartBtn');
@@ -2881,7 +2922,10 @@ function wkToggle(){
     display.classList.remove('running');
     if(finishBtn) finishBtn.style.display = 'block';
   } else {
-    // Start or resume
+    // Start or resume — only record clock time on very first start
+    if(wkElapsed === 0 && wkSessionStartTime === null){
+      wkSessionStartTime = new Date();
+    }
     wkStartTime = Date.now();
     wkRunning = true;
     wkInterval = setInterval(wkTick, 100);
@@ -2910,6 +2954,7 @@ function wkReset(){
   if(wkRunning){ clearInterval(wkInterval); wkRunning = false; }
   wkElapsed = 0;
   wkStartTime = 0;
+  wkSessionStartTime = null;
   const display = document.getElementById('wkTimerDisplay');
   const startBtn = document.getElementById('wkStartBtn');
   const statusBadge = document.getElementById('wkStatusBadge');
@@ -2945,11 +2990,17 @@ function wkFinish(){
 
   // Save
   const history = S.get('wk_history', []);
+  const startedAt = wkSessionStartTime
+    ? wkSessionStartTime.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})
+    : null;
+  const endedAt = new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'});
   history.unshift({
     date: today(),
     day: sessionLabel,
     duration: durationStr,
     mins: durationMins,
+    startedAt: startedAt,
+    endedAt: endedAt,
     timestamp: Date.now()
   });
   // Keep last 50 sessions
@@ -2958,6 +3009,7 @@ function wkFinish(){
   // Reset timer state
   wkElapsed = 0;
   wkStartTime = 0;
+  wkSessionStartTime = null;
   const display = document.getElementById('wkTimerDisplay');
   const startBtn = document.getElementById('wkStartBtn');
   const statusBadge = document.getElementById('wkStatusBadge');
@@ -2987,6 +3039,7 @@ function renderWkHistory(){
       <div class="wk-hist-left">
         <div class="wk-hist-day">${s.day}</div>
         <div class="wk-hist-date">${s.date}</div>
+        ${s.startedAt ? `<div class="wk-hist-times">STARTED ${s.startedAt}${s.endedAt ? '  ·  ENDED '+s.endedAt : ''}</div>` : ''}
       </div>
       <div>
         <div class="wk-hist-dur">${s.duration}</div>
